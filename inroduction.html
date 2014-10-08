@@ -36,11 +36,7 @@
 		<![endif]-->
 	</head>
 
-	<body>		
-		<audio id = 'strauss'>
-			<source src="http://www.dream-ware.co.uk/downloads/music/ffe/mp3-R1/bluedanR1.mp3" type="audio/mpeg">
-			Your browser does not support the audio element.
-		</audio> 
+	<body>
 		
 		<script type="text/x-mathjax-config">
 			MathJax.Hub.Config({
@@ -71,13 +67,6 @@
 
 				<section data-background = '#С2D9EF'>
 					<h2>Мир, в котором возможно всё.</h2>
-				</section>
-				
-				<section data-state = 'ouverture'>
-					<h2>Музыка!</h2>
-					<p>
-						Штраус, чтобы подчеркнуть величие момента (и просто потому что я этого хотел).
-					</p>
 				</section>
 				
 				<section data-state = 'video' data-background = 'black'>
@@ -153,7 +142,7 @@ function linkify( selector ) {
 				<section>
 					<h2>Экспорт в PDF!</h2>
 					<p>
-						<a href="thoughtspile.github.io/presentation-hub/introduction.html#pdf-export">Наслаждайтесь</a>
+						<a href="introduction.html#pdf-export">Наслаждайтесь</a>
 					</p>
 				</section>
 
@@ -217,10 +206,6 @@ function linkify( selector ) {
 					videoId: 'IchJ_2paHNs'
 				});
 			}
-			
-			Reveal.addEventListener('ouverture', function() {
-				document.getElementById('strauss').play();
-			}, false);
 			
 			Reveal.addEventListener('stest', function() {
 				var canvas = document.getElementById('scriptTest'),
