@@ -52,7 +52,7 @@
 				<section data-background = '#99A0EF'>
 					<h2>Что это за новомодные штучки?</h2>
 					<p>
-						<small>Библиотека <a href="http://hakim.se">Хакима Эль Хаттаба</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
+						<small>Библиотека reveal.js <a href="http://hakim.se">Хакима Эль Хаттаба</a> / <a href="http://twitter.com/hakimel">@hakimel</a></small>
 						<br>
 						<small>Презентация <a href="http://github.com/thoughtspile">Владимира К.</a></small>
 					</p>
@@ -69,10 +69,9 @@
 					<h2>Мир, в котором возможно всё.</h2>
 				</section>
 				
-				<section data-state = 'video' data-background = 'black'>
+				<section data-state = 'video' data-background = '#000'>
 					<h2 style = 'color: white'>Видео!</h2>
-					<!--<iframe style = "width: 80%; height: 100%, position: fixed" src="http://www.youtube.com/embed/O-dIXy0zMDA?html5=1"></iframe>-->
-					<div id = "player"></div>
+					<iframe style = 'width: 100%; height: 500px' src="http://www.youtube.com/embed/n6aCMgy0ES4?autoplay=1&rel=0&showinfo=0&controls=0&hd=1"></iframe> 
 				</section>
 
 				<section>
@@ -84,18 +83,24 @@
 				</section>
 
 				<section>
-					<h2>Простота</h2>
-					<p>
-						HTML гораздо проще, чем TeX, и придуман для компьютера, а не для печати, что очень кстати.
-					</p>
-					<p>
-						Шаг вперед: визуальный редактор <a href="http://slid.es" target="_blank">http://slid.es</a>.
-					</p>
+					<h2>Простота!</h2>
+					<ul>
+						<li>HTML гораздо проще, чем TeX, и придуман для компьютера, а не для печати, что очень кстати.</li>
+						<li>Шаг вперед: визуальный редактор <a href="http://slid.es" target="_blank">http://slid.es.</a></li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Свобода!</h2>
+					<ul>
+						<li>Смотрите, показывайте, редактируйте презентации где и когда угодно: все что вам нужно — браузер и блокнот.</li>
+						<li>Положите презентацию на сервер, и она будет доступна откуда угодно с последними изменениями.</li>
+					</ul>
 				</section>
 
 				<section>
 					<section>
-						<h2>Красота</h2>
+						<h2>Красота!</h2>
 						<ul>
 							<li>Темы по умолчанию прекрасны.</li>
 							<li>Нужно постараться, чтобы сделать презентацию уродливой.</li>
@@ -140,21 +145,11 @@ function linkify( selector ) {
 				</section>
 
 				<section>
-					<h2>Экспорт в PDF!</h2>
-					<p>
-						<a href="https://github.com/hakimel/reveal.js#pdf-export">Не слишком удобно =(</a>
-					</p>
-					<p>
-						Вот тут доставайте ТеХ
-					</p>
-				</section>
-
-				<section>
 					<h2>Что же вы медлите?</h2>
 					<ul>
 						<li><a href="http://slid.es">Онлайн-редактор</a></li>
 						<li><a href="example.html">Презентация попроще для примера</a></li>
-						<li><a href="https://github.com/hakimel/reveal.js">Гитхаб</a></li>
+						<li><a href="https://github.com/hakimel/reveal.js">Скачайте reveal.js с гитхаба</a></li>
 					</ul>
 				</section>
 
@@ -164,7 +159,6 @@ function linkify( selector ) {
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
-		<script src="https://www.youtube.com/iframe_api"></script>
 
 		<script>
 
@@ -192,23 +186,7 @@ function linkify( selector ) {
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
 					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
 				]
-			});			
-			
-			
-			var player;
-			function onYouTubeIframeAPIReady() {
-				player = new YT.Player('player', {
-					height: '513',
-					width: '1200',
-					playerVars: { 'autoplay': 1, 'controls': 0, 'egm': 0, 'showinfo': 0, 'rel': 0, 'hd': 1},
-					events: {
-						'onReady': function(e) {
-							e.target.mute();
-						}
-					},
-					videoId: 'IchJ_2paHNs'
-				});
-			}
+			});
 			
 			Reveal.addEventListener('stest', function() {
 				var canvas = document.getElementById('scriptTest'),
