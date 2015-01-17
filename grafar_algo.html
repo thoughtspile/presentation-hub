@@ -1,0 +1,226 @@
+﻿<!doctype html>
+<html lang="ru">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Идеальная математическая визуализация</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Vladimir Klepov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
+		<style type="text/css">
+			p, h2 { 
+				text-align: left; 
+			}
+			.quotef {
+				border-top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>		
+		<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+				tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]}
+			});
+		</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background = 'orange'>
+					<h2>Как сделать идеальную математическую визуализацию</h2>
+					<p>
+						<small>Советует <a href="http://github.com/thoughtspile">Владимир К.</a></small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Нам понадобится:</h2>
+					<p>
+						<ul>
+							<li>Формализовать задачу визуализаци;</li>
+							<li>Немного понять WebGL;</li>
+							<li>Добавить реактивные вычисения;</li>
+							<li>Научиться работать с неявными функциями...</li>
+							<li>... и переменными-списками;</li>
+							<li>Обобщить для работы со сложными функциями.</li>
+						</ul>
+					</p>
+				</section>
+
+				<section data-background = '#С2D9EF'>
+					<h2>Формализуем:</h2>
+					<p>
+						Пусть \(P(x)\) &mdash; предикат на \( x \in S \). Тогда:
+					</p>
+					<p class = 'quotef'>
+						\(vis(P) = pr(X)\), где <br>
+						\(X = \{x \in S | P(x)\} \) &mdash; набор данных<br>
+						\(pr(x): S \rightarrow M_{w \times h}(RGB)\) &mdash; функция визуализации,
+						\(RGB = GF_{256}^3\) &mdash; пространство цветов.						
+					</p>
+					<p>
+						Теперь мы можем отдать \(pr\) шейдерам WebGL и думать только про \(X\).
+					</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Как работает WebGL.</h2>
+					<p>
+						GL работает с буферами, описывающими модель:
+						<ul>
+							<li>Берет аттрибуты: \(x, y, z, c \in \mathbb{R}^n\)</li>
+							<li>и числа (uniforms): \(t \in \mathbb{R}\)</li>
+							<li>поэлементно проецирует их на экран маленькими программами-шейдерами: \(f(x_i, y_i, z_i, t)\)</li>
+							<li>Чтобы это происходило быстрее, GL отправляет буферы на видеокарту и обрабатывает параллельно.</li>
+						<ul>
+						<img src = "http://i.stack.imgur.com/M1LOy.png"></img>
+					</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Как же найти \(X: P(X)\)?</h2>
+					<p>
+						В общем виде &mdash; никак =(.
+					</p>
+					<p>
+						Поэтому мы разрешим только \(P(x) = B_1(f_1(x), g_1(x)) \wedge \dots \wedge B_n(f_n(x), g_n(x))\), где
+						\(B_i(x)\) &mdash; бинарное отношение на \(S_i\), <br>
+						\(f_i, g_i: S \rightarrow S_i\).
+					</p>
+						Это можно сделать через ДНФ:
+						\[
+							y = f_1(x) \vee y = f_2(x) \Leftrightarrow \\ 
+							i \in \{1,2\} \wedge y = f(x,i) \wedge f(x, i) = f_i(x). 
+						\]
+					<p>
+					</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Ищем \(X\)</h2>
+					<p>
+						<ul>
+							<li>Теперь можно выбрать такие \(i\), что \(f_i = Id, B_i\) &mdash; отношение эквивалентности, например \(f(z) = z, g(x) = x + y, f(z) = g(x)\).</li>
+							<li>Эти строки &mdash; наш аналог присваивания. Мы можем легко найти \(z\), если знаем все переменные правой части.</li>
+							<li>Другие функции можно привести к виду \(F_j(x) = 0\) и искать решения итерационными методами.</li>
+					</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Реактивное программирование</h2>
+					<p>
+						Чтобы найти значение переменной, нам нужно знать значения всех переменных, от которых оно зависит. <br>
+						Построим граф зависимостей (если \(z = x + y\), то \(x, y, z\) &mdash; вершины, \((x, z), (y, z)\) &mdash; ребра.
+						Когда меняются значение переменной, все значения снизу по графу обновляются.
+						Так делают excel и grasshopper.
+					</p>
+					<img src = "http://rbrodiegh.files.wordpress.com/2013/02/loop-scale-with-graph-mapper.jpg"></img>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Бегство от мультиграфа</h2>
+					<p>
+						Если \(x = f(a,b) \wedge x = g(a, c)\), 
+						перейдем к \(F(a,b,c) = \left|f(a,b) - g(a,c)\right| = 0 
+						\wedge x = f(a,b)\). Можно выбрать для х более простую функцию.
+					</p>
+					<img src = "img/multigraph.gif"></img>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Убираем циклические зависимости</h2>
+					<p>
+						Но что если \(x = f(x)\) или \(x = f(y), y = g(x)\)?
+						<img src = 'http://mathworld.wolfram.com/images/eps-gif/CycleGraphs_850.gif'></img>
+					</p>
+					<p>
+						Просто заменим каждый цикл на новую неявную функцию:
+						\(F(x) = x - f(x) = 0\) или \(G(x, y) = \left|x - f(y) \right| + \left|y - g(x) \right| = 0\)
+					</p>
+				</section>				
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Работаем со списками</h2>
+					<p>
+						<ul>
+							<li>Разрешим списки: \(X = (x_1,\dots, x_n), Y = (y_1,\dots, y_m), z(x, y)\).</li>
+							<li>Нужно найти все значения z: \(Z = \{z(x, y) | x \in X, y \in Y\}\)</li>
+							<li>При этом нужно поддерживать порядок: \( \forall i = 1..mn \Rightarrow z_i = z(\overline{x}_i, \overline{y}_i) \)</li>
+							<li>Я использую реляционные таблицы и вычисляю 
+								\[\overline{X} \in \mathbb{R}^{mn}, \overline{x}_i = \left\lfloor{x_{\frac{i}{m}}}\right\rfloor\]
+								\[\overline{Y} \in \mathbb{R}^{mn}, \overline{y}_i = i \mod n\]
+							</li>
+							<li>
+						</li>
+						</ul>
+					</p>
+				</section>
+								
+				<section data-background = '#С2D9EF'>
+					<h2>Убираем циклические зависимости</h2>
+					<p>
+						Но что если \(x = f(x)\) или \(x = f(y), y = g(x)\)?
+						<img src = 'http://mathworld.wolfram.com/images/eps-gif/CycleGraphs_850.gif'></img>
+					</p>
+					<p>
+						Просто заменим каждый цикл на новую неявную функцию:
+						\(F(x) = x - f(x) = 0\) или \(G(x, y) = \left|x - f(y) \right| + \left|y - g(x) \right| = 0\)
+					</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Спасибо за внимание!</h2>
+					<p>
+						В случае чего вы всегда знаете, как меня найти.
+					</p>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+		</script>
+
+	</body>
+</html>
