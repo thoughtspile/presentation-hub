@@ -196,8 +196,15 @@
             grafar.config.minPanelHeight = 0;
             grafar.config.debug = false;
             var t = 0;
+            var sinOn = false,
+                torusOn = false,
+                candelaOn = false,
+                tripleOn = false;
             
-            Reveal.addEventListener('sinxx', function animTorus() {  
+            Reveal.addEventListener('sinxx', function animTorus() {
+                if (sinOn) return;
+                sinOn = true;
+                
                 var panSinXX = new grafar
                         .Panel(document.getElementById('grafar-sinxx'))
                         .setAxes(['x', 'y']),
@@ -220,6 +227,9 @@
             });
             
             Reveal.addEventListener('candela', function animTorus() {  
+                if (candelaOn) return;
+                candelaOn = true;
+                
                 var pan3d = new grafar.Panel(document.getElementById('grafar-candela')),
                     bld1 = new grafar.Object().pin(pan3d),
                     pi = Math.PI,
@@ -252,6 +262,9 @@
             });
                 
             Reveal.addEventListener('triple', function animTorus() {    
+                if (tripleOn) return;
+                tripleOn = true;
+                
                 var panPts = new grafar.Panel(document.getElementById('grafar-pts'));
                     pts = new grafar.Object().pin(panPts);
                 var panSects = new grafar.Panel(document.getElementById('grafar-sects'));
@@ -285,6 +298,9 @@
             });
             
             Reveal.addEventListener('anim_torus', function () {
+                if (torusOn) return;
+                torusOn = true;
+                
                 var panTorus = new grafar.Panel(document.getElementById('grafar-torus'));
 				pts = new grafar.Object().pin(panTorus);
                 
