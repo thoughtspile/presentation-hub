@@ -1,0 +1,304 @@
+﻿<!doctype html>
+<html lang="ru">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Математическая визуализация в реальном времени  с grafar</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Vladimir Klepov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
+		<style type="text/css">
+			p, h2 { 
+				text-align: left; 
+			}
+			.quotef {
+				border-top: 100px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background = 'orange'>
+					<h2>Математическая визуализация в реальном времени  с grafar</h2>
+					<p>
+						<small>
+                            Владимир Клепов<br>
+                            Высшая Школа Экономики, Москва
+                        </small>
+					</p>
+				</section>
+
+				<section>
+					<h2>Что нужно сделать</h2>
+					<p>Формализовать задачу</p>
+					<p>Набросать реализацию</p>
+					<p>
+                        Применить реактивные вычисения<br>
+                        c переменными-списками</li>
+                    </p>
+                    <p>Кое-что еще</p>
+				</section>
+
+				<section data-background = '#С2D9EF' data-state = 'sinxx'>
+					<h2>Математическая визуализация</h2>
+					<p>Зачем? Как всегда, чтобы видеть закономерности.</p>
+					<p>
+                        Предлагаю алгоритм:
+                        <table>
+                            <tr>
+                                <td>1. Взять символьное описание
+                                    $$x \in \left[-1, 1\right] \wedge y = \frac{\sin{x}}{x}$$
+                                </td>
+                                <td>3. Сгенерировать точки <br>
+                                    <code>
+                                        x = [-1, -.99, ...] <br>
+                                        y = [.45, .46, ...] 
+                                    </code>
+                                </td>
+                            <tr>
+                            <tr>
+                                <td>2. Преобразовать в алгоритм <br>
+                                    <code>for (i = 0; i &lt; l; i++) <br>
+                                        y[i] = sin(x[i]) / x[i];
+                                    </code>
+                                </td>
+                                <td>4. Отобразить
+                                </td>
+                            <tr>
+                        </table>
+					</p>                    
+                    <figure id = 'grafar-sinxx' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 100%; background: white'>
+                    </figure>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Какой должна быть система</h2>
+					<table>
+                        <tr>
+                            <td>Доступной</td>
+                            <td>&#8594; Писать на JavaScript</td>
+                        <tr>
+                        <tr>
+                            <td>Трехмерной</td>
+                            <td>&#8594; WebGL</td>
+                        <tr>
+                        <tr>
+                            <td>Быстрой</td>
+                            <td>&#8594; Оптимизировать</td>
+                        <tr>
+                        <tr>
+                            <td>Интерактивной</td>
+                            <td>&#8594; Реактивное программирвание</td>
+                        <tr>
+                        <tr>
+                            <td>Эстесткой</td>
+                            <td>&#8594; Цветовые схемы</td>
+                        <tr>
+                    </table>	
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Реактивное программирование</h2>
+                        <p>Вид декларативного прграммирования</p>
+                        <p>Построим граф потока данных:<br>
+                            &mdash; Вершины &mdash; переменные<br>
+                            &mdash; Ребра &mdash; зависимости
+                        </p>
+                        <img src = 'img/DFG.png' style = 'float: right; width: 80%'></img>
+				</section>
+				
+				<section data-background = '#С2D9EF' data-state = 'candela'>
+					<h2>Пауза</h2>
+					<figure id = 'grafar-candela' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 700px; background: white'>
+                    </figure>
+				</section>
+				
+				<section data-background = '#С2D9EF' data-state = 'triple'>
+					<h2>Переменные-списки</h2>
+					<p>Работая с многомерными данными, нужно хорошо уметь комбинировать</p>
+					<p>Мотивирующий пример: выбрать \((x, y)\) из \(x \in \left[0,1\right] \wedge y 
+                    \in \left[0,1\right]\) &mdash; совсем не то же самое, что из \(x \in 
+                    \left[0,1\right] \wedge y = f(x)\)</p>
+					<p>Нужно исследовать алгебраическую структуру списков с операцией умножения</p>
+					<p>В подарок можно автоматически искать буфер индексов</p>
+					<figure id = 'grafar-pts' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+					<figure id = 'grafar-sects' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+					<figure id = 'grafar-surf' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+				</section>
+				
+				<section data-background = '#С2D9EF' data-state = "anim_torus">
+					<h2>Еще одна пауза</h2>					
+					<figure id = 'grafar-torus' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 700px; background: white'>
+                    </figure>
+				</section>				
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Что делать дальше</h2>
+					<p>Оптимизировать вычисления</p>
+					<p>Искать разрывы</p>
+					<p>Упрощать зависимости компьютерной алгеброй</p>
+					<p>Представлять поверхности мешами</p>
+					<p>Суб-списковые обновления</p>
+				</section>
+				
+				<section data-background = '#С2D9EF'>
+					<h2>Спасибо за внимание!</h2>
+					<p>Можете задать вопросы</p>
+					<p>Или потом на v.klepov@gmail.com</p>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, 
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/math/math.js', async: true }
+				]
+			});
+		</script>
+        
+        <script type="text/javascript" src="grafar/loader.js"></script>
+        <script type="text/javascript">
+		runGrafar(function() {
+            grafar.config.minPanelWidth = 0;
+            grafar.config.minPanelHeight = 0;
+            grafar.config.debug = false;
+            var t = 0;
+            
+            Reveal.addEventListener('sinxx', function animTorus() {  
+                var panSinXX = new grafar
+                        .Panel(document.getElementById('grafar-sinxx'))
+                        .setAxes(['x', 'y']),
+                    sinxx = new grafar.Object().pin(panSinXX);
+                panSinXX.camera.position.set(0, 2.6, 0);
+                    
+                sinxx.constrain({what: 'x', maxlen: 200, as: grafar.seq(-Math.PI / 2, Math.PI / 2, 'x')})
+                    .constrain({what: 'y', using: 'x, t', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.y[i] = Math.sin(data.t[i]) * Math.sin(data.x[i]) / data.x[i];
+                    }});
+                
+                (function anim() {
+                    t += .01; 
+                    sinxx
+                        .constrain({what: 't', maxlen: 1, as: function(data) { data.t[0] = t; }})
+                        .refresh();
+                    window.requestAnimationFrame(anim);
+                }());
+            });
+            
+            Reveal.addEventListener('candela', function animTorus() {  
+                var pan3d = new grafar.Panel(document.getElementById('grafar-candela')),
+                    bld1 = new grafar.Object().pin(pan3d),
+                    pi = Math.PI,
+                    segAng = 3 * pi / 2,
+                    seg = 8,
+                    angRescale = 2 * pi / segAng / seg,
+                    power = 2,
+                    hScale = 1/3;
+                
+                pan3d.camera.position.set(-1.3, 1.07, 1.7);
+                    
+                bld1.constrain({what: 'r', maxlen: 30, as: grafar.logseq(0, 1, 'r')})
+                    .constrain({what: 'phi', maxlen: 30, as: grafar.seq(-segAng / 2, segAng / 2, 'phi')})
+                    .constrain({what: 'rep', maxlen: seg, as: grafar.seq(0, 2 * pi, 'rep', true, true)})
+                    .constrain({what: 'layer', maxlen: 2, as: grafar.seq(0, 1, 'layer', false, true)})
+                    .constrain({what: 'z', using: 'r, phi, rep, layer', as: function(data, l) {
+                        var r = data.r, phi = data.phi;
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = hScale * Math.pow(r[i], power) * Math.cos(phi[i]) + data.layer[i] / 50;
+                    }})
+                    .constrain({what: 'x', using: 'r, phi, rep, layer', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.x[i] = Math.cos(data.rep[i] + angRescale * data.phi[i]) * data.r[i];
+                    }})
+                    .constrain({what: 'y', using: 'r, phi, rep, layer', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.y[i] = Math.sin(data.rep[i] + angRescale * data.phi[i]) * data.r[i];
+                    }})
+                    .refresh();
+            });
+                
+            Reveal.addEventListener('triple', function animTorus() {    
+                var panPts = new grafar.Panel(document.getElementById('grafar-pts'));
+                    pts = new grafar.Object().pin(panPts);
+                var panSects = new grafar.Panel(document.getElementById('grafar-sects'));
+                    sects = new grafar.Object().pin(panSects);
+                var panSurf = new grafar.Panel(document.getElementById('grafar-surf'));
+                    surf = new grafar.Object().pin(panSurf);
+                    
+                pts.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x', false, true)})
+                    .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y', false, true)})
+                    .constrain({what: 'z', using: 'x, y', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    }})
+                    .refresh();
+                    
+                sects.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x')})
+                    .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y', false, true)})
+                    .constrain({what: 'z', using: 'x, y', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    }})
+                    .refresh();
+                    
+                surf.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x')})
+                    .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y')})
+                    .constrain({what: 'z', using: 'x, y', as: function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    }})
+                    .refresh();
+            });
+            
+            Reveal.addEventListener('anim_torus', function () {
+                var panTorus = new grafar.Panel(document.getElementById('grafar-torus'));
+				pts = new grafar.Object().pin(panTorus);
+                
+                (function animTorus() {
+                    pts.constrain({what: 'x, y, z', maxlen: 9000, as: grafar.traceZeroSet(function(v) {
+                            return Math.pow(2 - Math.sqrt(v[0] * v[0] + v[1] * v[1]), 2) + v[2] * v[2] - Math.cos(Math.cos(t * 5));
+                        }, ['x', 'y', 'z'])})
+                        .refresh();
+                    window.requestAnimationFrame(animTorus);
+                }());
+            });
+            
+		}, 'grafar/');
+	</script>
+
+	</body>
+</html>

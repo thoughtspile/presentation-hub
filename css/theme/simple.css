@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,300italic,700);
 /**
  * A simple theme for reveal.js presentations, similar
  * to the default theme. The accent color is darkblue.
@@ -14,7 +14,7 @@ body {
   background-color: white; }
 
 .reveal {
-  font-family: "Open Sans", sans-serif;
+  font-family: "PT Serif", serif;
   font-size: 36px;
   font-weight: normal;
   letter-spacing: -0.02em;
@@ -36,7 +36,7 @@ body {
 .reveal h6 {
   margin: 0 0 20px 0;
   color: black;
-  font-family: "Open Sans", Helvetica, sans-serif;
+  font-family: "PT Serif", serif;
   font-weight: 300;
   line-height: 0.9em;
   letter-spacing: 0.02em;
