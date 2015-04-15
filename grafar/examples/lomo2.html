@@ -1,0 +1,54 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<title>testbox</title>
+</head>
+
+<body>
+	<div id = "grafar-pts" style = 'width: 400px; height: 200px; background: white'></div>
+	<div id = "grafar-sects" style = 'width: 400px; height: 200px; background: white'></div>
+	<div id = "grafar-surf" style = 'width: 400px; height: 200px; background: white'></div>
+	
+	<script type="text/javascript" src="../loader.js"></script>
+	<script type="text/javascript">
+		runGrafar(function() {
+            grafar.config.minPanelWidth = 0;
+            grafar.config.minPanelHeight = 0;
+            grafar.config.debug = false;
+            
+			var panPts = new grafar.Panel(document.getElementById('grafar-pts'));
+				pts = new grafar.Object().pin(panPts);
+			var panSects = new grafar.Panel(document.getElementById('grafar-sects'));
+				sects = new grafar.Object().pin(panSects);
+			var panSurf = new grafar.Panel(document.getElementById('grafar-surf'));
+				surf = new grafar.Object().pin(panSurf);
+				
+            pts.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x', false, true)})
+                .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y', false, true)})
+				.constrain({what: 'z', using: 'x, y', as: function(data, l) {
+					for (var i = 0; i < l; i++)
+						data.z[i] = Math.sin(data.x[i] * data.y[i]);
+				}})
+                .refresh();
+                
+            sects.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x')})
+                .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y', false, true)})
+				.constrain({what: 'z', using: 'x, y', as: function(data, l) {
+					for (var i = 0; i < l; i++)
+						data.z[i] = Math.sin(data.x[i] * data.y[i]);
+				}})
+                .refresh();
+                
+			surf.constrain({what: 'x', maxlen: 30, as: grafar.seq(-2, 2, 'x')})
+                .constrain({what: 'y', maxlen: 30, as: grafar.seq(-2, 2, 'y')})
+				.constrain({what: 'z', using: 'x, y', as: function(data, l) {
+					for (var i = 0; i < l; i++)
+						data.z[i] = Math.sin(data.x[i] * data.y[i]);
+				}})
+                .refresh();
+		}, '../');
+	</script>
+
+	</body>
+</html>

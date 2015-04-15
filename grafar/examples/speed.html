@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<title>Grafar v1 speed</title>
+</head>
+
+<body>
+	<script type="text/javascript" src="../loader.js"></script>
+	<script type="text/javascript">
+		runGrafar(function() {
+			var db = new grafar.Database();
+            var n = 600;
+				
+			var ztab = db.constrain({what: 'x', maxlen: n, as: grafar.seq(0, 1, 'x')})
+				.constrain({what: 'y', maxlen: n, as: grafar.seq(0, 1, 'y')})
+				.constrain({what: 'z', using: 'x, y', as: function(data, l) {
+					var x = data.x, 
+                        y = data.y;
+					for (var i = 0; i < l; i++)
+						data.z[i] = x[i] + (x[i] - y[i]);
+				}})
+				.select('z');
+                
+            console.time('surf');
+            ztab.refresh('z');
+            console.timeEnd('surf');
+		}, '../');
+	</script>
+
+	</body>
+</html>

@@ -1,0 +1,132 @@
+﻿<!doctype html>
+
+<html lang="en">
+<head>
+	<title>Метод неопределенных множителей Лагранжа</title>
+	
+	<link rel="stylesheet" type="text/css" href="../stylesheets/grafar_style.css" media="screen" />
+	
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+			"HTML-CSS": { linebreaks: { automatic: true, width: "75% container" } }
+		});
+    </script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+	<div id = "plot_area"><!--
+		--><div id = "plot3d_main"></div><!--
+		--><div id = "plot3d_cond"></div>
+	</div><!--
+	--><div id = "ui">
+		<h1 id = "logo">grafar jr.</h1>
+		
+		<div id = "options"></div>
+		<div id = "info"></div>
+	</div>
+	
+	<script type="text/javascript" src="lagrange_problemslist.js"></script>
+	<script type="text/javascript" src="../loader.js"></script>
+	<script type="text/javascript">
+		runGrafar(function() {
+			grafar.config.debug = false;
+			var infoDiv = document.getElementById('info');
+			problems.forEach(function(pr) {
+				pr.div = document.createElement('div');
+				pr.div.innerHTML = pr.info;
+			});
+			
+			var maxConditions = Math.max.apply(null, problems.map(function(p) {return p.conditions.length;})),
+				maxLambda = Math.max.apply(null, problems.map(function(p) {return p.lambda.length;})),
+				activeConditions = 0;
+				
+			grafar.ui([
+				{type: 'label', init: 'Choose the problem: '},
+				{type: 'select', id: 'problem', init: problems.map(function(pr) {
+						return pr.id + ': ' + pr.eqn;
+					}), bind: updateProblem},
+				{type: 'br'},
+				{type: 'checkbox', id: 'show_cond', bind: plotArea},
+				{type: 'label', init: ' Show conditions'}
+			], {container: 'options'});
+			
+			var pan3d_main = new grafar.Panel(document.getElementById('plot3d_main')),
+				pan3d_cond = new grafar.Panel(document.getElementById('plot3d_cond')),
+				all_conditions = [];
+			
+			for (var i = 0; i < maxConditions; i++) {
+				all_conditions.push(new grafar.Object().pin(pan3d_main));
+			}
+			
+			var main_graf = new grafar.Object().pin(pan3d_main),
+				cond_graf = new grafar.Object().pin(pan3d_cond);
+			var problem;
+			
+			updateProblem();
+			
+			function updateProblem() {
+				problem = problems[grafar.UI.problem.val];
+				
+				if (infoDiv.children.length !== 0)
+					infoDiv.removeChild(infoDiv.firstChild);
+				infoDiv.appendChild(problem.div);
+				if(grafar.isExisty(window.MathJax))
+					MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+					
+				activeConditions = problem.conditions.length;
+				var f = problem.eqn;
+				
+				//Это основной график
+				main_graf.constrain({what: 'x', maxlen: 50, as: grafar.seq(-5, 5, 'x')})
+						 .constrain({what: 'y', maxlen: 50, as: grafar.seq(-5, 5, 'y')})
+						 .constrain({what: 'z', using: 'x, y', as: problem.eqn_comp})
+						 .refresh();
+				
+				//А вот это закрашивает уже нариованное
+				for (var i = 0; i < maxConditions; i++) {
+					all_conditions[i].constrain({what: 'x', maxlen: 50, as: grafar.seq(-5, 5, 'x')})
+									 .constrain({what: 'y', maxlen: 50, as: grafar.seq(-5, 5, 'y')})
+									 .constrain({what: 'z', using: 'x, y', as: problem.conditions_comp[i]})
+									 .refresh();
+					all_conditions[i].hide(false);
+				}
+				
+				cond_graf.constrain({what: 'x', maxlen: 50, as: grafar.seq(-5, 5, 'x')})
+						 .constrain({what: 'y', maxlen: 50, as: grafar.seq(-5, 5, 'y')})
+						 .constrain({what: 'z', using: 'x, y', as: problem.eqn_comp})
+						 .refresh();
+				
+				plotMainCond();
+				//plotArea();
+			}
+			
+			function plotMainCond() {
+				for (var i = 0; i < maxConditions; i++) {
+					main_graf.constrain({what: 'z', using: 'x, y', as: problem.conditions_comp[i]})
+							 .refresh();
+				}
+			}
+			
+			function plotArea() {
+				if (grafar.UI.show_cond.val) {
+					var L = problems[grafar.UI.problem.val].eqn;
+					for (var i = 0; i < maxConditions; i++) {
+						L += problem.lambda[i] + '*(' + problem.conditions[i] + ')'; 
+					}
+					area.constrain({what: 'x, y, z', maxlen: 15000, as: grafar.ductParse(L, problem.cube)}).refresh();
+				}
+				else {
+					var f = problems[grafar.UI.problem.val].eqn;
+					area.constrain({what: 'x, y, z', maxlen: 15000, as: grafar.ductParse(f, problem.cube)}).refresh();
+				}
+			}
+		}, '../');
+	</script>
+
+	</body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<title>testbox</title>
+</head>
+
+<body>
+	<div id = "grafar-torus" style = 'width: 400px; height: 200px; background: white'></div>
+	
+	<script type="text/javascript" src="../loader.js"></script>
+	<script type="text/javascript">
+		runGrafar(function() {
+            grafar.config.minPanelWidth = 0;
+            grafar.config.minPanelHeight = 0;
+            grafar.config.debug = false;
+            
+			var panTorus = new grafar.Panel(document.getElementById('grafar-torus'));
+				pts = new grafar.Object().pin(panTorus);
+            pts.constrain({what: 'x, y, z', maxlen: 15000, as: grafar.traceZeroSet(function(v) {
+					return Math.pow(2 - Math.sqrt(v[0] * v[0] + v[1] * v[1]), 2) + v[2] * v[2] - .36;
+				}, ['x', 'y', 'z'])})
+                .refresh();
+		}, '../');
+	</script>
+
+	</body>
+</html>
