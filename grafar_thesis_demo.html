@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ru">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Математическая визуализация в реальном времени  с grafar</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Vladimir Klepov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
+		<style type="text/css">
+			p, h2 { 
+				text-align: left; 
+			}
+            .lp {
+                margin-top: 2em;
+            }
+			.quotef {
+				border-top: 100px;
+			}
+            input {
+                border-radius: 3px;
+                font-size: 1em;
+                font-family: "PT Serif", serif;
+                width: 2em;
+            }
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-background = 'orange'>
+					<h2>Система для математической визуализации в реальном времени</h2>
+					<p>
+						<small>
+                            <b>Владимир Клепов</b>, факультет компьютерных наук НИУ ВШЭ
+                        </small>
+					</p>
+                    <p>
+						<small>
+                            Научный руководитель &mdash; доцент, кандидат наук А. А. Никитин<br>
+                        </small>
+					</p>
+				</section>
+
+				<section data-background = '#С2D9EF'>
+					<h2>Мотивация</h2>
+                    <ul>
+                        <li>Работа для проекта Visualmath.ru</li>
+                        <li>Образовательное использование</li>
+                        <li>3D &mdash; естественная размерность для многих задач: 
+                            векторный анализ, функции многих переменных, 
+                            математическая физика
+                        </li>
+                        <li>Интерактивность: исследовать связь между параметрами системы</li>
+                    </ul>
+                    <figure id = 'grafar-sinxx' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 100%; background: white'>
+                    </figure>
+				</section>
+                
+                <section data-background = '#С2D9EF'>
+					<h2>Альтернативы</h2>
+                    <ul>
+                        <li>Отдельные приложения (Matlab, R) &mdash; привязаны к ОС, нужно учить специальный язык</li>
+                        <li>pyplot &mdash; трудно устроить кроссплатформенность</li>
+                        <li>MathBox.js &mdash; сложный API, основанный на GLSL; не рассчитана на интерактивность</li>
+                        <li>d3 &mdash; не подходит для 3D, не работает с математикой</li>
+                    </ul>
+                    </figure>
+				</section>
+								
+				<section data-background = '#С2D9EF'>
+					<h2>Реактивное программирование</h2>
+                        <ul>
+                            <li>Вид декларативного прграммирования</li>
+                            <li>Идея: явно выразить зависимости между элементами. 
+                                Реагировать на событие, вычисляя новые значения всех 
+                                зависимых элементов.
+                            </li>
+                            <table style = 'vertical-align: top;'><tr>
+                                <td style = 'vertical-align: top;'>
+                                x = <input id = 'inputX' type = 'number' value = '0'></input> <br>
+                                y = 2 <br>
+                                z = x * y = <span id = 'zVal'>0</span> <br>
+                                t = <span id = 'tVal'>0</span> <br>
+                                w = z + t = <span id = 'wVal'>0</span> <br>
+                                </td>
+                                <td style = 'vertical-align: top;'>
+                                    <img src = 'DFG.png' style = 'margin-left: 1em; box-shadow: 0 0 0; border: 0px;'></img>
+                                </td>
+                            </tr></table>
+                        </ul>
+				</section>
+				
+                <section data-background = '#С2D9EF' data-state = 'top'>
+					<h2>Высокоуровневый интерфейс</h2>
+                    <p>
+                        x \in [0, 1] -> sys.add('x', range(0, 1, 20)) <br>
+                        y = sin(ax) -> sys.add('y(a, x)', map(function(a, x) {return sin(a * x); }))
+                    </p>
+                    <figure id = 'grafar-pts' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+					<figure id = 'grafar-sects' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+					<figure id = 'grafar-surf' style = 'display: inline-block; width: 30%; height: 200px; background: white'></figure>
+				</section>
+                
+				<section data-background = '#С2D9EF' data-state = 'candela'>
+					<h2>Возможности</h2>
+					<figure id = 'grafar-candela' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 700px; background: white'>
+                    </figure>
+				</section>
+								
+				<section data-background = '#С2D9EF'>
+					<h2>Спасибо за внимание!</h2>
+				</section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, 
+				transition: Reveal.getQueryHash().transition || 'linear', // default/cube/page/concave/zoom/linear/fade/none
+
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/math/math.js', async: true }
+				]
+			});
+		</script>
+        
+        <script src = 'grafar.js'></script>        
+        <script src = 'thesis_rutil.js'></script>
+        <script src = 'thesis_rdemo.js'></script>
+        <script type="text/javascript">      
+            Reveal.addEventListener('top', function topDemo() {
+                console.log('hi');
+                var panPts = new grafar.Panel(document.getElementById('grafar-pts')),
+                    pts = new grafar.Object().pin(panPts);
+                var panSects = (new grafar.Panel(document.getElementById('grafar-sects'))).setAxes(['x', 'z']),
+                    sects = new grafar.Object().pin(panSects);
+                var panSurf = new grafar.Panel(document.getElementById('grafar-surf')).setAxes(['x', 'z']),
+                    surf = new grafar.Object().pin(panSurf);
+                    
+                pts.add('x', grafar.seq(-2, 2, 'x'), {maxlen: 30, discrete: false})
+                    .add('y', grafar.seq(0, 1, 'y'), {maxlen: 5, discrete: false})
+                    .add('z: x, y', function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    })
+                    .refresh();
+                pts.glinstances[0].object.children[0].visible = false;
+                pts.glinstances[0].object.children[2].material.transparent = false;
+                    
+                sects.add('x', grafar.seq(-2, 2, 'x'), {maxlen: 30, discrete: false})
+                    .add('y', grafar.seq(0, 1, 'y'), {maxlen: 5, discrete: true})
+                    .add('z: x, y', function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    })
+                    .refresh();
+                sects.glinstances[0].object.children[0].visible = false;
+                
+                surf.add('x', grafar.seq(-2, 2, 'x'), {maxlen: 30, discrete: false})
+                    .add('y', grafar.seq(0, 1, 'y'), {maxlen: 20, discrete: false})
+                    .add('z: x, y', function(data, l) {
+                        for (var i = 0; i < l; i++)
+                            data.z[i] = Math.sin(data.x[i] * data.y[i]);
+                    })
+                    .refresh();
+                surf.glinstances[0].object.children[0].visible = false;
+                surf.glinstances[0].object.children[1].visible = false;
+                surf.glinstances[0].object.children[2].material.transparent = false;
+                    
+                Reveal.removeEventListener('top', topDemo);   
+            });
+                  
+            Reveal.addEventListener('candela', function runSurf() {
+                var pan3d = new grafar.Panel(document.getElementById('grafar-candela')),
+                    bld1 = new grafar.Object().pin(pan3d),
+                    curve = new grafar.Object().pin(pan3d);
+                    
+                bld1.glinstances[0].object.children[1].material.transparent = true;
+                bld1.glinstances[0].object.children[1].material.opacity = 0;
+                bld1.glinstances[0].object.children[1].material.color = new THREE.Color('black');
+                bld1.glinstances[0].object.children[2].material.color = new THREE.Color('skyblue');
+                bld1.glinstances[0].object.children[0].visible = false;
+                bld1.glinstances[0].object.children[2].material.opacity = 0;
+                
+                curve.glinstances[0].object.children[0].material.size = 7;
+                curve.glinstances[0].object.children[0].material.opacity = .9;
+                curve.glinstances[0].object.children[0].material.color = new THREE.Color('orange');
+                curve.constrain('r', grafar.seq(.3, 1.1, 'r'), {maxlen: 6, discrete: true})
+                    .constrain('phi', grafar.seq(0, Math.PI, 'phi'), {maxlen: 101})
+                    .constrain('t', grafar.constant(0, 't'), {maxlen: 1})
+                    .constrain('x, y, z: r, phi, t', function(data, l) {
+                        for (var i = 0; i < l; i++) {
+                            data.x[i] = Math.cos(data.phi[i] + data.t[i] * data.r[i]) * data.r[i];
+                            data.y[i] = 2 * Math.sin(data.phi[i] + data.t[i] * data.r[i]) * data.r[i];
+                            data.z[i] = Math.cos(data.x[i]) * Math.sin(data.y[i]) * Math.cos(data.t[i]);
+                        }
+                    });
+                
+                var s = Date.now();
+                (function animCrv() {
+                    curve.constrain('t', grafar.constant(.001 * (Date.now() - s), 't'), {maxlen: 1})
+                        .refresh();
+                    window.requestAnimationFrame(animCrv);
+                }());
+                
+                setTimeout(function() {
+                    bld1.constrain('r', grafar.seq(0, 2, 'r'), {maxlen: 20})
+                        .constrain('phi', grafar.seq(0, 2 * Math.PI, 'phi'), {maxlen: 101})
+                        .constrain('t', grafar.constant(0, 't'), {maxlen: 1})
+                        .constrain('x: r, phi', function(data, l) {
+                            for (var i = 0; i < l; i++)
+                                data.x[i] = Math.cos(data.phi[i]) * data.r[i];
+                        })
+                        .constrain('y: r, phi', function(data, l) {
+                            for (var i = 0; i < l; i++)
+                                data.y[i] = 2 * Math.sin(data.phi[i]) * data.r[i];
+                        })
+                        .constrain('z: x, y, t', function(data, l) {
+                            for (var i = 0; i < l; i++)
+                                data.z[i] = Math.cos(data.x[i]) * Math.sin(data.y[i]) * Math.cos(data.t[i]);
+                        });
+                        
+                    (function animSurf() {
+                        bld1.constrain('t', grafar.constant(.001 * (Date.now() - s), 't'), {maxlen: 1})
+                            .refresh();
+                        if (bld1.glinstances[0].object.children[2].material.opacity !== 1) {
+                            bld1.glinstances[0].object.children[2].material.opacity += .004;
+                            bld1.glinstances[0].object.children[1].material.opacity += .004;
+                        } else {
+                            bld1.glinstances[0].object.children[2].material.transparent = false;
+                            bld1.glinstances[0].object.children[1].material.transparent = false;
+                        }                        
+                        window.requestAnimationFrame(animSurf);
+                    }());
+                }, 10000);
+                
+                Reveal.removeEventListener('candela', runSurf);                
+            });
+        </script>
+
+	</body>
+</html>
