@@ -14,8 +14,17 @@ var logHTML = function(node) {return function(p) {
 }};
 var timer = function(period) {
     var time = 0;
-    var rv = lift(function() { return time++; });                
+    var rv = lift(function() { return time++; });
     setInterval(rv.invalidate.bind(rv), period);
+    return rv;
+};
+var ctimer = function(period) {
+    var s = Date.now();
+    var rv = lift(function() { return (Date.now() - s) / period; });
+    (function up() {
+        rv.invalidate();
+        window.requestAnimationFrame(up);
+    }());
     return rv;
 };
 
