@@ -27,5 +27,6 @@ var ctimer = function(period) {
     }());
     return rv;
 };
+console.log(ctimer);
 
 grafar.Object.prototype.add = grafar.Object.prototype.constrain;
