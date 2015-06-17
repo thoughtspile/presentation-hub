@@ -125,7 +125,18 @@
                 
 				<section data-background = '#С2D9EF' data-state = 'candela'>
 					<h2>Возможности</h2>
-					<figure id = 'grafar-candela' style = 'z-index: -10; position: absolute; top: 0; width: 100%; height: 700px; background: white'>
+					<figure id = 'grafar-candela' class = 'stretch' style = 'z-index: -10; width: 100%; height: 100%; background: white;'>
+                    </figure>
+                    <span style = 'z-index: 100; position: absolute; bottom: 0; left: 0;'>
+                        r = <input style = 'width: 2.5em;' id = 'inputRO' type = 'number' value = '0' step = '.01'></input>
+                    </span>
+                </section>
+                
+                <section data-background = '#С2D9EF' data-state = 'levelset'>
+					<h2>Пример: линии уровня</h2>
+                    <figure style = 'height: 100%;' class = 'stretch'>
+                        <figure id = "render" style = 'display: inline-block; min-width: 45%; width: 45%; height: 100%; background: white;'></figure>
+                        <figure id = "render2d" style = 'display: inline-block; min-width: 45%; width: 45%; height: 100%; background: white;'></figure>
                     </figure>
 				</section>
                 
@@ -172,6 +183,7 @@
         <script src = 'thesis_rdemo.js'></script>
         <script src = 'data/stops.js'></script>
         <script src = 'data/milano_shapes.js'></script>
+        <script src = 'thesis_levelset.js'></script>
         <script src = 'thesis_milano.js'></script>
         <script type="text/javascript">      
             Reveal.addEventListener('top', function topDemo() {
@@ -278,19 +290,30 @@
                         window.requestAnimationFrame(animSurf);
                     };
                     
-                    var roffset = 0;
+                    
+                    var inputRO = document.getElementById('inputRO');
+                    var rr = lift(function() { 
+                        var r = parseFloat(inputRO.value);
+                        console.log(r);
+                        bld1.constrain('r', grafar.seq(r, 2 + r, 'r'), {maxlen: 20})
+                            .refresh(); 
+                    });
+                    inputRO.addEventListener('change', rr.invalidate.bind(rr));
                     function morphToCylinder() {
-                        roffset += .003;
-                        bld1.constrain('r', grafar.seq(roffset, 2 + roffset, 'r'), {maxlen: 20})
-                            .refresh();
+                        rr.validate();
                         window.requestAnimationFrame(morphToCylinder);
                     };
                     
                     animSurf();
-                    setTimeout(morphToCylinder, 20000);
+                    morphToCylinder();
                 }, 10000);
                 
                 Reveal.removeEventListener('candela', runSurf);                
+            });
+            
+            Reveal.addEventListener('levelset', function wrapLevelSet() {
+                runLevelSet();
+                Reveal.removeEventListener('milano', wrapLevelSet);                
             });
             
             Reveal.addEventListener('milano', function wrapMilano() {
