@@ -112,14 +112,16 @@
                         y = times(a, x).map((a, x) => sin(a * x)); <br>
                         graph([x, y]).pin(pan);
                     </p>
-                    <figure id = 'grafar-pts' style = 'display: inline-block; width: 30%; height: 200px; background: white'>
-                        <small>pan.axes(['x', 'a', 'y'])</small>
-                    </figure>
-					<figure id = 'grafar-sects' style = 'display: inline-block; width: 30%; height: 200px; background: white'>
-                        <small>a = set(seq(0, 1, 5))</small>
-                    </figure>
-					<figure id = 'grafar-surf' style = 'display: inline-block; width: 30%; height: 200px; background: white'>
-                        <small>a = range(0, 1, 5)</small>
+                    <figure class = 'stretch'>
+                        <figure id = 'grafar-pts' style = 'display: inline-block; width: 30%; height: 100%; background: white'>
+                            <small>pan.axes(['x', 'a', 'y'])</small>
+                        </figure>
+                        <figure id = 'grafar-sects' style = 'display: inline-block; width: 30%; height: 100%; background: white'>
+                            <small>a = set(seq(0, 1, 5))</small>
+                        </figure>
+                        <figure id = 'grafar-surf' style = 'display: inline-block; width: 30%; height: 100%; background: white'>
+                            <small>a = range(0, 1, 5)</small>
+                        </figure>
                     </figure>
 				</section>
                 
@@ -313,7 +315,7 @@
             
             Reveal.addEventListener('levelset', function wrapLevelSet() {
                 runLevelSet();
-                Reveal.removeEventListener('milano', wrapLevelSet);                
+                Reveal.removeEventListener('levelset', wrapLevelSet);                
             });
             
             Reveal.addEventListener('milano', function wrapMilano() {
